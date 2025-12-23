@@ -22,7 +22,9 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Install Xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libegl1 libgl1 libxkbcommon-x11-0
 
       - name: Run tests
         run: xvfb-run -a python -m pytest
