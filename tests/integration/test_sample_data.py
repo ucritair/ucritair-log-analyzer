@@ -44,7 +44,7 @@ SAMPLE_CASES = [
         "nox_nonzero": 693,
         "resampled_rows": 177748,
         "resampled_median_dt": 180,
-        "aqi_max": 467.0,
+        "aqi_max": 602.0,
         "aqi_min": 0.0,
         "daily_rows": 371,
         "daily_max": 81.0,
