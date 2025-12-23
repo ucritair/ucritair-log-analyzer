@@ -1,0 +1,4 @@
+/* Minimal light theme placeholder */
+QWidget {
+  font-size: 12px;
+}

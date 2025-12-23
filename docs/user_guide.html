@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>muCritAir Log Analyzer - User Guide</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1c1c1c;
+      --muted: #5a5a5a;
+      --accent: #0b6aa2;
+      --code-bg: #f5f5f5;
+      --border: #e0e0e0;
+    }
+    html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+    header { padding: 24px 28px; border-bottom: 1px solid var(--border); }
+    main { padding: 24px 28px 48px; max-width: 1000px; }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h2 { margin-top: 28px; }
+    h3 { margin-top: 18px; }
+    p { line-height: 1.5; color: var(--fg); }
+    ul { padding-left: 20px; }
+    li { margin: 6px 0; }
+    code, pre { background: var(--code-bg); border-radius: 6px; }
+    code { padding: 2px 6px; }
+    pre { padding: 10px 12px; overflow: auto; }
+    .note { color: var(--muted); }
+    .section { border-top: 1px solid var(--border); padding-top: 16px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tag { display: inline-block; background: #eef6fb; color: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>muCritAir Log Analyzer - User Guide</h1>
+    <p class="note">Detailed documentation for every button, feature, and algorithm. This guide matches the current app behavior.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Quick Start</h2>
+      <ol>
+        <li>Launch the app: <code>python -m app.main</code></li>
+        <li>Click <strong>Import CSV</strong> or use <strong>File -&gt; Import CSV</strong>.</li>
+        <li>Pick metrics in the left sidebar and view plots in the Plot tab.</li>
+        <li>Use Smoothing, Air Quality (AQI), Ventilation (ACH), and Exposure tabs for analysis.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>Main Window Layout</h2>
+      <ul>
+        <li><strong>Menu bar</strong>: File actions for import/save/load.</li>
+        <li><strong>Left sidebar</strong>: dataset list and metric checklist (show/hide).</li>
+        <li><strong>Tabs</strong>: Import, Plot, Smoothing, Air Quality (AQI), Ventilation (ACH), Exposure, Export, Data Table, Checks.</li>
+        <li><strong>Status bar</strong>: system status messages.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Menu Bar</h2>
+      <h3>File</h3>
+      <ul>
+        <li><strong>Import CSV</strong>: open a device log CSV and import it into the dataset list.</li>
+        <li><strong>Save Project</strong>: saves a JSON project file with dataset paths and settings.</li>
+        <li><strong>Load Project</strong>: loads a JSON project, re-imports the listed datasets, and applies settings.</li>
+        <li><strong>Exit</strong>: closes the app.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Import &amp; Clean Tab</h2>
+      <ul>
+        <li><strong>Mask VOC/NOx zeros as inactive</strong>: when enabled (default), VOC/NOx values of 0 are treated as missing (NaN) and excluded from plots and analysis.</li>
+        <li><strong>Enable particulate flatline diagnostics</strong>: detects constant segments in PM/PN channels for diagnostic reporting (no masking by default).</li>
+        <li><strong>Auto-mask particulate flatlines</strong>: when enabled, flagged PM/PN flatlines are masked (set to NaN).</li>
+        <li><strong>Resample interval</strong>: resamples to a regular grid (e.g., <code>3min</code>). Used for plotting and analysis when enabled.</li>
+        <li><strong>Use resampled data for plotting/analysis</strong>: toggles whether the app uses resampled data or original clean data.</li>
+        <li><strong>Apply to current dataset</strong>: applies these settings to the selected dataset (recomputes masks, gaps, and diagnostics).</li>
+      </ul>
+
+      <h3>Algorithms</h3>
+      <ul>
+        <li><strong>Masking</strong>: per-metric validity masks; PM/PN must be &gt;= 0; VOC/NOx zeros masked by default.</li>
+        <li><strong>Gap detection</strong>: a gap is flagged if <code>dt &gt; gap_factor * median_dt</code> (default factor 2.0).</li>
+        <li><strong>Resampling</strong>: numeric columns use mean aggregation; FLAGS are forward-filled.</li>
+        <li><strong>Flatline detection</strong>: a segment is flagged if constant for at least N samples or T minutes; multi-channel flag triggers if many PM/PN channels flatline together.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Plot Tab</h2>
+      <ul>
+        <li><strong>Limit analyses to a time window</strong>: adds a draggable selection band; the selected window is used by Ventilation and Exposure when they are set to "Use selected time window only".</li>
+        <li><strong>Clear range</strong>: resets the selection to full range.</li>
+        <li><strong>Mouse mode</strong>: choose <code>Pan</code> (drag to move) or <code>Zoom</code> (drag to box-zoom).</li>
+        <li><strong>Start/End (UTC)</strong>: type a specific date/time window to jump to. Click <strong>Apply time window</strong> to set it.</li>
+        <li><strong>Apply range</strong>: sets the view and selection to the specified Start/End.</li>
+        <li><strong>Show full range</strong>: returns the plot to the full time range.</li>
+        <li><strong>Right-click on the plot</strong>: choose “Set range start here” or “Set range end here” to set the selection to that point.</li>
+      </ul>
+      <p>Each plotted metric gets its own Y axis. Raw and filtered series for the same metric share the same axis.</p>
+
+      <h3>Plot Rendering</h3>
+      <ul>
+        <li><strong>Raw series</strong>: plotted as semi-transparent points.</li>
+        <li><strong>Filtered series</strong>: plotted as solid lines in the same color.</li>
+        <li><strong>Decimation</strong>: for large datasets, plotting decimates by stride to keep the UI responsive.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Smoothing Tab</h2>
+      <ul>
+        <li><strong>SMA window</strong>: enter samples or a time duration (e.g., <code>30min</code>).</li>
+        <li><strong>EMA tau</strong>: enter seconds or a time duration (e.g., <code>15min</code>).</li>
+        <li><strong>EMA NaN mode</strong>: behavior when encountering missing values: <code>skip</code>, <code>reset</code>, or <code>hold</code>.</li>
+        <li><strong>Apply smoothing</strong>: applies smoothing for plotting and analysis.</li>
+      </ul>
+
+      <h3>Algorithms</h3>
+      <pre><code>SMA (sample window): y[i] = mean(x[i - N + 1 ... i])
+SMA (time window): mean of samples in [t - W, t]
+
+Time-aware EMA:
+  alpha_i = 1 - exp(-dt_i / tau)
+  y_i = alpha_i * x_i + (1 - alpha_i) * y_{i-1}
+</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Air Quality (AQI) Tab</h2>
+      <ul>
+        <li><strong>Standard set</strong>: select a standards pack (US EPA AQI legacy, US EPA AQI 2024 update, EU EEA AQI, WHO Guidelines 2021, UK Defra DAQI, India CPCB NAQI, China MEE AQI).</li>
+        <li><strong>Sources</strong>: primary references for each pack are listed in <a href="aqi_sources.md">aqi_sources.md</a>.</li>
+        <li><strong>Averaging</strong>:
+          <ul>
+            <li><code>instant</code>: use instantaneous samples.</li>
+            <li><code>rolling_24h</code>: 24-hour rolling mean.</li>
+            <li><code>daily</code>: daily mean (calendar day).</li>
+          </ul>
+        </li>
+        <li><strong>Show category shading</strong>: toggles background shading of AQI categories.</li>
+        <li><strong>Compute air quality index</strong>: computes AQI time series and summary table.</li>
+      </ul>
+
+      <h3>Algorithms</h3>
+      <p>Note: Some standards (EEA, WHO, UK DAQI) are banded categories. In those cases the plotted value is the band index, not the US-style 0-500 AQI scale.</p>
+      <pre><code>Truncation (EPA style, if configured by pack):
+  PM2.5 truncated to 0.1 ug/m3
+  PM10 truncated to 1 ug/m3
+
+AQI sub-index (EPA formula):
+  I = (I_hi - I_lo) / (BP_hi - BP_lo) * (C - BP_lo) + I_lo
+
+Overall AQI (PM-only): max(aqi_pm25, aqi_pm10)
+</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Ventilation (Air Change Rate) Tab</h2>
+      <ul>
+        <li><strong>Series</strong>: choose <code>co2</code> or <code>pn10</code>.</li>
+        <li><strong>Method</strong>:
+          <ul>
+            <li><code>regression</code> / <code>two_point</code> for CO2</li>
+            <li><code>time_constant_63</code> for CO2 (time to 63% decay)</li>
+            <li><code>nonlinear</code> / <code>log_linear</code> for PN10</li>
+          </ul>
+        </li>
+        <li><strong>Baseline mode</strong>:
+          <ul>
+            <li><code>manual</code>: use Baseline input.</li>
+            <li><code>drop_430</code>: fixed 430 ppm (CO2 default).</li>
+            <li><code>percentile</code>: P5 baseline from selected data.</li>
+          </ul>
+        </li>
+        <li><strong>Use selected time window only</strong>: restricts fit to current plot selection.</li>
+        <li><strong>Fit Decay</strong>: runs the fit and outputs ACH/eACH and R^2.</li>
+        <li><strong>Min drop (ppm)</strong>: minimum CO2 drop required to qualify as a decay event.</li>
+        <li><strong>Min duration (min)</strong>: minimum duration for a decay event.</li>
+        <li><strong>Detect Decay Events</strong>: auto-detects CO2 decay events, labels them on the plot, and lists ACH results.</li>
+        <li><strong>Annotate events on plot</strong>: draws event markers for the detected decay events.</li>
+        <li><strong>Clear plot annotations</strong>: removes event markers from the plot.</li>
+        <li><strong>Stats (R^2 &gt;= 0.9)</strong>: shows summary stats (n, mean, median, min, max, std) for ACH values with good fit quality.</li>
+      </ul>
+
+      <h3>Algorithms</h3>
+      <pre><code>CO2 decay model:
+  C(t) = C_amb + (C0 - C_amb) * exp(-k * t)
+
+Regression fit (CO2):
+  ln(C - C_amb) = a - k * t_hours
+  ACH = k
+
+Time-constant method (CO2):
+  Find time for (C - C_amb) to reach (C_peak - C_amb) / e
+  tau = time_to_threshold
+  ACH = 1 / tau
+
+Auto-detected decay events:
+  1) Find local peaks (CO2 above baseline) using a smoothed series
+  2) Pair each peak with the next local trough (end of the drop)
+  3) If peak-to-trough drop >= min_drop, search for the 1/e crossing
+  4) If 1/e is not reached before the next rise, use regression and warn
+  5) Label each event (E1, E2, ...) and draw start/end cursors
+
+PN10 decay model (eACH):
+  P(t) = P_bg + (P0 - P_bg) * exp(-k * t)
+  eACH = k
+
+Nonlinear PN10 fit uses curve_fit on P(t) in original space.
+Log-linear PN10 fit uses ln(P - P_bg) with points above baseline.
+</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Exposure (Dosimetry) Tab</h2>
+      <ul>
+        <li><strong>Metric</strong>: choose a series (e.g., pm2_5).</li>
+        <li><strong>Threshold</strong>: numeric threshold for exceedance calculations.</li>
+        <li><strong>Summary period</strong>: daily / weekly / monthly summaries.</li>
+        <li><strong>Use selected time window only</strong>: restricts calculations to the selected window.</li>
+        <li><strong>Compute exposure summary</strong>: calculates totals plus normalized metrics (average level, relative to threshold, time above percent).</li>
+      </ul>
+
+      <h3>Algorithms</h3>
+      <pre><code>AUC exposure:
+  integral of x(t) dt over time (seconds-based)
+
+Exceedance AUC:
+  integral of max(0, x(t) - T) dt
+
+Time above threshold:
+  sum of dt where x(t) &gt; T
+
+Normalized metrics:
+  Average level = AUC / total time
+  Relative to threshold = Average level / T
+  Time above (%) = (time above / total time) * 100
+</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Export Tab</h2>
+      <ul>
+        <li><strong>Export Clean CSV</strong>: writes cleaned dataset to CSV.</li>
+        <li><strong>Export Clean Parquet</strong>: writes cleaned dataset to Parquet.</li>
+        <li><strong>Export Filtered CSV</strong>: writes filtered dataset using current filter settings.</li>
+        <li><strong>Export air quality index (CSV)</strong>: writes AQI series using current standard pack and averaging mode.</li>
+        <li><strong>Export ventilation result (JSON)</strong>: saves last ACH/eACH fit result.</li>
+        <li><strong>Export Exposure CSV</strong>: saves last exposure summary table.</li>
+        <li><strong>Export Plot Image</strong>: exports the current plot view as a PNG.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Data Table Tab</h2>
+      <ul>
+        <li><strong>Mode</strong>: view <code>clean</code>, <code>raw</code>, or <code>resampled</code> data.</li>
+        <li><strong>Use selected time window only</strong>: filters table rows to the selected time window.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Diagnostics Tab</h2>
+      <ul>
+        <li><strong>Detected gaps</strong>: lists gaps where dt exceeds threshold.</li>
+        <li><strong>Flatline diagnostics</strong>: counts flagged flatline samples per metric.</li>
+        <li><strong>FLAGS distribution</strong>: counts FLAGS values and shows binary form.</li>
+        <li><strong>Mask reasons</strong>: counts reasons for masking per metric (e.g., inactive_zero, negative).</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Project Files</h2>
+      <p>Project files are JSON and store dataset paths, processing config, filter config, and the active standard pack. On load, datasets are re-imported from disk.</p>
+    </section>
+
+    <section class="section">
+      <h2>Key Data Policies</h2>
+      <ul>
+        <li><strong>PM/PN zeros</strong> are treated as valid measurements by default.</li>
+        <li><strong>VOC/NOx zeros</strong> are treated as inactive and masked by default.</li>
+        <li><strong>All masks are per-metric</strong>; rows are never globally deleted.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+name: "EU EEA Air Quality Index (PM only)"
+source: "https://www.eea.europa.eu/en/analysis/indicators/air-quality-index"
+notes: "EAQI PM2.5/PM10 daily index bands. This pack maps each band to a discrete index (1-6)."
+breakpoints:
+  pm25:
+    - [0.0, 10.0, 1, 1]
+    - [10.1, 20.0, 2, 2]
+    - [20.1, 25.0, 3, 3]
+    - [25.1, 50.0, 4, 4]
+    - [50.1, 75.0, 5, 5]
+    - [75.1, 800.0, 6, 6]
+  pm10:
+    - [0.0, 20.0, 1, 1]
+    - [20.1, 40.0, 2, 2]
+    - [40.1, 50.0, 3, 3]
+    - [50.1, 100.0, 4, 4]
+    - [100.1, 150.0, 5, 5]
+    - [150.1, 1200.0, 6, 6]
+rounding:
+  pm25: "round"
+  pm10: "round"
+categories:
+  - {name: "Good", low: 0.5, high: 1.5, color: "#00E400"}
+  - {name: "Fair", low: 1.5, high: 2.5, color: "#B7E64B"}
+  - {name: "Moderate", low: 2.5, high: 3.5, color: "#FFEA00"}
+  - {name: "Poor", low: 3.5, high: 4.5, color: "#FF7E00"}
+  - {name: "Very Poor", low: 4.5, high: 5.5, color: "#FF0000"}
+  - {name: "Extremely Poor", low: 5.5, high: 6.5, color: "#7E0023"}

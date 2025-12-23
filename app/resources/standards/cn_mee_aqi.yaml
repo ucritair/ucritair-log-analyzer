@@ -1,0 +1,30 @@
+name: "China MEE AQI (PM only)"
+source: "https://www.mee.gov.cn/"
+notes: "PM-only implementation using China's AQI breakpoints (HJ 633-2012)."
+breakpoints:
+  pm25:
+    - [0.0, 35.0, 0, 50]
+    - [35.1, 75.0, 51, 100]
+    - [75.1, 115.0, 101, 150]
+    - [115.1, 150.0, 151, 200]
+    - [150.1, 250.0, 201, 300]
+    - [250.1, 350.0, 301, 400]
+    - [350.1, 500.0, 401, 500]
+  pm10:
+    - [0.0, 50.0, 0, 50]
+    - [50.1, 150.0, 51, 100]
+    - [150.1, 250.0, 101, 150]
+    - [250.1, 350.0, 151, 200]
+    - [350.1, 420.0, 201, 300]
+    - [420.1, 500.0, 301, 400]
+    - [500.1, 600.0, 401, 500]
+rounding:
+  pm25: "round"
+  pm10: "round"
+categories:
+  - {name: "Excellent", low: 0, high: 50, color: "#00E400"}
+  - {name: "Good", low: 51, high: 100, color: "#FFFF00"}
+  - {name: "Lightly Polluted", low: 101, high: 150, color: "#FF7E00"}
+  - {name: "Moderately Polluted", low: 151, high: 200, color: "#FF0000"}
+  - {name: "Heavily Polluted", low: 201, high: 300, color: "#8F3F97"}
+  - {name: "Severely Polluted", low: 301, high: 500, color: "#7E0023"}

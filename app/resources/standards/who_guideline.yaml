@@ -1,0 +1,28 @@
+name: "WHO Air Quality Guidelines 2021 (PM only)"
+source: "https://www.who.int/publications/i/item/9789240034228"
+notes: "PM2.5/PM10 24-hour guideline and interim targets (IT-4..IT-1). This pack uses discrete bands."
+breakpoints:
+  pm25:
+    - [0.0, 15.0, 1, 1]
+    - [15.1, 25.0, 2, 2]
+    - [25.1, 37.5, 3, 3]
+    - [37.6, 50.0, 4, 4]
+    - [50.1, 75.0, 5, 5]
+    - [75.1, 1000.0, 6, 6]
+  pm10:
+    - [0.0, 45.0, 1, 1]
+    - [45.1, 50.0, 2, 2]
+    - [50.1, 75.0, 3, 3]
+    - [75.1, 100.0, 4, 4]
+    - [100.1, 150.0, 5, 5]
+    - [150.1, 1200.0, 6, 6]
+rounding:
+  pm25: "round"
+  pm10: "round"
+categories:
+  - {name: "AQG", low: 0.5, high: 1.5, color: "#00E400"}
+  - {name: "IT-4", low: 1.5, high: 2.5, color: "#B7E64B"}
+  - {name: "IT-3", low: 2.5, high: 3.5, color: "#FFEA00"}
+  - {name: "IT-2", low: 3.5, high: 4.5, color: "#FF7E00"}
+  - {name: "IT-1", low: 4.5, high: 5.5, color: "#FF0000"}
+  - {name: "Above IT-1", low: 5.5, high: 6.5, color: "#7E0023"}
