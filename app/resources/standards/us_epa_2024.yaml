@@ -1,6 +1,6 @@
 name: "US EPA AQI (2024 PM2.5 update)"
-source: "https://www.federalregister.gov/documents/2024/02/07/2024-01910/revisions-to-the-air-quality-index-aqi-for-particulate-matter"
-notes: "EPA AQI with updated PM2.5 breakpoints effective May 6, 2024. PM2.5 and PM10 are truncated before applying breakpoints."
+source: "https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf"
+notes: "EPA AQI with updated PM2.5 breakpoints effective May 6, 2024. PM2.5 and PM10 are truncated before applying breakpoints. Rule reference: https://www.federalregister.gov/documents/2024/02/07/2024-01910/revisions-to-the-air-quality-index-aqi-for-particulate-matter"
 breakpoints:
   pm25:
     - [0.0, 9.0, 0, 50]
@@ -8,16 +8,14 @@ breakpoints:
     - [35.5, 55.4, 101, 150]
     - [55.5, 125.4, 151, 200]
     - [125.5, 225.4, 201, 300]
-    - [225.5, 325.4, 301, 400]
-    - [325.5, 500.4, 401, 500]
+    - [225.5, 325.4, 301, 500]
   pm10:
     - [0.0, 54.0, 0, 50]
     - [55.0, 154.0, 51, 100]
     - [155.0, 254.0, 101, 150]
     - [255.0, 354.0, 151, 200]
     - [355.0, 424.0, 201, 300]
-    - [425.0, 504.0, 301, 400]
-    - [505.0, 604.0, 401, 500]
+    - [425.0, 604.0, 301, 500]
 rounding:
   pm25: "round"
   pm10: "round"
@@ -25,6 +23,7 @@ concentration_truncation:
   pm25: 0.1
   pm2_5: 0.1
   pm10: 1
+extrapolate_upper: true
 categories:
   - {name: "Good", low: 0, high: 50, color: "#00E400"}
   - {name: "Moderate", low: 51, high: 100, color: "#FFFF00"}

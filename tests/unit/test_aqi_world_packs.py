@@ -55,6 +55,13 @@ def test_us_epa_2024_pm25_boundary_and_truncation():
     assert float(aqi_df["aqi_overall"].iloc[2]) == 51.0
 
 
+def test_us_epa_2024_extrapolate_above_500():
+    pack = load_standard_pack(Path("app/resources/standards/us_epa_2024.yaml"))
+    pm25 = _series(400.0)
+    aqi_df = compute_aqi(pm25, None, pack)
+    assert float(aqi_df["aqi_overall"].iloc[0]) > 500.0
+
+
 def test_eu_eea_pm25_band():
     pack = load_standard_pack(Path("app/resources/standards/eu_eea.yaml"))
     pm25 = _series(12.0)

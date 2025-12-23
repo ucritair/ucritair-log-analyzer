@@ -25,6 +25,7 @@ concentration_truncation:
   pm25: 0.1
   pm2_5: 0.1
   pm10: 1
+extrapolate_upper: true
 categories:
   - {name: "Good", low: 0, high: 50, color: "#00E400"}
   - {name: "Moderate", low: 51, high: 100, color: "#FFFF00"}

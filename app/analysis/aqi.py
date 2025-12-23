@@ -15,6 +15,7 @@ class StandardPack:
     rounding: dict[str, str]
     categories: list[dict[str, Any]] | None = None
     concentration_truncation: dict[str, float] | None = None
+    extrapolate_upper: bool | None = None
 
 
 def load_standard_pack(path: Path) -> StandardPack:
@@ -25,6 +26,7 @@ def load_standard_pack(path: Path) -> StandardPack:
         rounding=data.get("rounding", {}),
         categories=data.get("categories"),
         concentration_truncation=data.get("concentration_truncation"),
+        extrapolate_upper=data.get("extrapolate_upper"),
     )
 
 
@@ -42,10 +44,19 @@ def _apply_rounding(value: float, mode: str) -> float:
     return value
 
 
-def _compute_subindex(series: pd.Series, breakpoints, rounding_mode: str) -> pd.Series:
+def _compute_subindex(
+    series: pd.Series,
+    breakpoints,
+    rounding_mode: str,
+    extrapolate_upper: bool = False,
+) -> pd.Series:
     result = pd.Series(index=series.index, dtype=float)
-    for conc_low, conc_high, idx_low, idx_high in breakpoints:
-        mask = (series >= conc_low) & (series <= conc_high)
+    ordered = sorted(breakpoints, key=lambda row: row[0])
+    for idx, (conc_low, conc_high, idx_low, idx_high) in enumerate(ordered):
+        if extrapolate_upper and idx == len(ordered) - 1:
+            mask = series >= conc_low
+        else:
+            mask = (series >= conc_low) & (series <= conc_high)
         if not mask.any():
             continue
         sub = (idx_high - idx_low) / (conc_high - conc_low) * (series[mask] - conc_low) + idx_low
@@ -100,6 +111,7 @@ def compute_aqi(pm25: pd.Series | None, pm10: pd.Series | None, pack: StandardPa
             series,
             pack.breakpoints[pm25_key],
             rounding_mode,
+            extrapolate_upper=bool(pack.extrapolate_upper),
         )
     if pm10 is not None and "pm10" in pack.breakpoints:
         step = _lookup_truncation(trunc_map, "pm10")
@@ -108,6 +120,7 @@ def compute_aqi(pm25: pd.Series | None, pm10: pd.Series | None, pack: StandardPa
             series,
             pack.breakpoints["pm10"],
             pack.rounding.get("pm10", "round"),
+            extrapolate_upper=bool(pack.extrapolate_upper),
         )
 
     df = pd.DataFrame(data)

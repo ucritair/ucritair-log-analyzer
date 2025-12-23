@@ -10,6 +10,8 @@ other pollutants (e.g., ozone), we compute only the PM sub-index.
   https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf
 
 - US EPA AQI (2024 PM2.5 update)  
+  Technical Assistance Document for Daily Air Quality reporting (includes Table 6 breakpoints)  
+  https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf  
   Federal Register final rule (revisions to AQI for PM2.5)  
   https://www.federalregister.gov/documents/2024/02/07/2024-01910/revisions-to-the-air-quality-index-aqi-for-particulate-matter
 
