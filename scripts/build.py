@@ -12,6 +12,7 @@ def main():
     subprocess.run([
         "pyinstaller",
         "--noconfirm",
+        "--clean",
         "--windowed",
         "--name",
         "mcritair-log-analyzer",
