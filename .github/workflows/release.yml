@@ -42,32 +42,32 @@ jobs:
       - name: Package artifact (Linux)
         if: runner.os == 'Linux'
         run: |
-          tar -C dist -czf mcritair-log-analyzer-linux-${{ runner.arch }}.tar.gz mcritair-log-analyzer
+          tar -C dist -czf ucritter-log-analyzer-linux-${{ runner.arch }}.tar.gz ucritter-log-analyzer
 
       - name: Package artifact (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path dist\\mcritair-log-analyzer* -DestinationPath mcritair-log-analyzer-windows-${{ runner.arch }}.zip
+          Compress-Archive -Path dist\\ucritter-log-analyzer* -DestinationPath ucritter-log-analyzer-windows-${{ runner.arch }}.zip
 
       - name: Package artifact (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          ditto -c -k --sequesterRsrc --keepParent "dist/mcritair-log-analyzer.app" "mcritair-log-analyzer-macos-${{ runner.arch }}.zip"
+          ditto -c -k --sequesterRsrc --keepParent "dist/ucritter-log-analyzer.app" "ucritter-log-analyzer-macos-${{ runner.arch }}.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mcritair-log-analyzer-${{ runner.os }}-${{ runner.arch }}
+          name: ucritter-log-analyzer-${{ runner.os }}-${{ runner.arch }}
           path: |
-            mcritair-log-analyzer-*.tar.gz
-            mcritair-log-analyzer-*.zip
+            ucritter-log-analyzer-*.tar.gz
+            ucritter-log-analyzer-*.zip
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            mcritair-log-analyzer-*.tar.gz
-            mcritair-log-analyzer-*.zip
+            ucritter-log-analyzer-*.tar.gz
+            ucritter-log-analyzer-*.zip
