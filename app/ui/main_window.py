@@ -44,6 +44,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.decay_events = []
 
         self.setWindowTitle("μCritAir Log Analyzer")
+        icon_path = Path(__file__).resolve().parents[1] / "resources" / "icons" / "ucritter.png"
+        if icon_path.exists():
+            self.setWindowIcon(QtGui.QIcon(str(icon_path)))
 
         self._build_menu()
         self._build_ui()
@@ -82,32 +85,39 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Left panel
         left_panel = QtWidgets.QWidget()
+        left_panel.setObjectName("sidebar")
         left_layout = QtWidgets.QVBoxLayout(left_panel)
         left_layout.setContentsMargins(8, 8, 8, 8)
         left_layout.setSpacing(8)
 
         self.workflow_label = QtWidgets.QLabel(
-            "Workflow: 1) Import a log file  2) Choose metrics to show  3) Explore in Plot  "
-            "4) Run calculations in the other tabs  5) Export results"
+            "<b>Start here</b><br>"
+            "1. Import a log file<br>"
+            "2. Choose what to show<br>"
+            "3. Explore in Plot<br>"
+            "4. Run analyses in other tabs<br>"
+            "5. Export results"
         )
         self.workflow_label.setWordWrap(True)
         self.workflow_label.setToolTip("Quick steps to get from raw data to plots and results.")
+        self.workflow_label.setObjectName("sidebarIntro")
         left_layout.addWidget(self.workflow_label)
 
-        data_group = QtWidgets.QGroupBox("Data files")
+        data_group = QtWidgets.QGroupBox("Data")
         data_layout = QtWidgets.QVBoxLayout(data_group)
-        self.import_btn = QtWidgets.QPushButton("Import data (CSV)")
+        self.import_btn = QtWidgets.QPushButton("Import CSV")
+        self.import_btn.setObjectName("primaryButton")
         self.import_btn.setToolTip("Open a CSV log file from disk.")
         self.dataset_list = QtWidgets.QListWidget()
         self.dataset_list.setToolTip("Pick which file to view and analyze.")
         data_layout.addWidget(self.import_btn)
-        data_layout.addWidget(QtWidgets.QLabel("Loaded files"))
+        data_layout.addWidget(QtWidgets.QLabel("Loaded logs"))
         data_layout.addWidget(self.dataset_list)
         left_layout.addWidget(data_group)
 
-        metrics_group = QtWidgets.QGroupBox("What to plot")
+        metrics_group = QtWidgets.QGroupBox("Metrics")
         metrics_layout = QtWidgets.QVBoxLayout(metrics_group)
-        metrics_note = QtWidgets.QLabel("Each metric gets its own y-axis.")
+        metrics_note = QtWidgets.QLabel("Each metric uses its own scale.")
         metrics_note.setWordWrap(True)
         metrics_note.setToolTip("This keeps different units on separate scales.")
         self.metric_tree = QtWidgets.QTreeWidget()
@@ -151,7 +161,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.addTab(self.exposure_tab, "Exposure")
         self.tabs.addTab(self.export_tab, "Export")
         self.tabs.addTab(self.data_tab, "Data Table")
-        self.tabs.addTab(self.diag_tab, "Checks")
+        self.tabs.addTab(self.diag_tab, "Data checks")
 
         self.tabs.setTabToolTip(0, "Import files and choose cleaning options.")
         self.tabs.setTabToolTip(1, "Explore the selected metrics over time.")
@@ -162,11 +172,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.setTabToolTip(6, "Export data, results, or plots.")
         self.tabs.setTabToolTip(7, "Browse the data table.")
         self.tabs.setTabToolTip(8, "Inspect gaps, flatlines, and masked values.")
+        self.tabs.setDocumentMode(True)
+        self.tabs.tabBar().setExpanding(False)
 
         splitter = QtWidgets.QSplitter()
         splitter.addWidget(left_panel)
         splitter.addWidget(self.tabs)
         splitter.setStretchFactor(1, 1)
+        splitter.setChildrenCollapsible(False)
+        splitter.setHandleWidth(1)
+        left_panel.setMinimumWidth(280)
+        left_panel.setMaximumWidth(360)
         layout.addWidget(splitter)
 
         self.status_bar = self.statusBar()

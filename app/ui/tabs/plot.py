@@ -38,13 +38,14 @@ class PlotTab(QtWidgets.QWidget):
         layout.setSpacing(8)
 
         intro = QtWidgets.QLabel(
-            "Explore the selected metrics over time. Drag to pan or zoom, and use the time window for analyses."
+            "Explore the selected metrics over time. Drag to pan or zoom, and use a time window for analyses."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         controls = QtWidgets.QHBoxLayout()
-        self.range_checkbox = QtWidgets.QCheckBox("Limit analyses to a time window")
+        self.range_checkbox = QtWidgets.QCheckBox("Use a time window for analyses")
         self.range_checkbox.setToolTip("When enabled, the selected window is used by Ventilation and Exposure.")
         self.clear_range_btn = QtWidgets.QPushButton("Clear time window")
         self.clear_range_btn.setToolTip("Clear the time window and show the full range.")
@@ -54,7 +55,7 @@ class PlotTab(QtWidgets.QWidget):
         controls.addWidget(self.range_checkbox)
         controls.addWidget(self.clear_range_btn)
         controls.addStretch(1)
-        controls.addWidget(QtWidgets.QLabel("Mouse action"))
+        controls.addWidget(QtWidgets.QLabel("Drag mode"))
         controls.addWidget(self.mode_combo)
 
         range_controls = QtWidgets.QHBoxLayout()

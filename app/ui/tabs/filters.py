@@ -19,6 +19,7 @@ class FiltersTab(QtWidgets.QWidget):
             "but it does not alter the raw data."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         smoothing_group = QtWidgets.QGroupBox("Smoothing settings")
@@ -37,6 +38,7 @@ class FiltersTab(QtWidgets.QWidget):
         self.nan_mode.setToolTip("How smoothing behaves when data has gaps.")
         self.apply_btn = QtWidgets.QPushButton("Apply smoothing")
         self.apply_btn.setToolTip("Apply smoothing to the current plot.")
+        self.apply_btn.setObjectName("primaryButton")
 
         form.addRow("Moving average window", self.sma_input)
         form.addRow("Exponential smoothing time", self.ema_input)

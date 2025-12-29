@@ -15,6 +15,7 @@ class ExposureTab(QtWidgets.QWidget):
             "Summarize exposure over time for a chosen measurement and threshold."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         form_group = QtWidgets.QGroupBox("Exposure settings")
@@ -31,6 +32,7 @@ class ExposureTab(QtWidgets.QWidget):
         self.selection_only.setToolTip("Use the time window from the Plot tab.")
         self.compute_btn = QtWidgets.QPushButton("Compute exposure summary")
         self.compute_btn.setToolTip("Calculate exposure metrics and summaries.")
+        self.compute_btn.setObjectName("primaryButton")
         self.result = QtWidgets.QLabel("No exposure computed")
 
         form.addRow("Metric", self.metric_combo)

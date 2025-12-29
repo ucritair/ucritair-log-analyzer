@@ -22,6 +22,7 @@ class ExportTab(QtWidgets.QWidget):
             "Export cleaned data, analysis results, or a plot image for sharing."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         self.export_csv_btn = QtWidgets.QPushButton("Export Clean CSV")
@@ -38,6 +39,7 @@ class ExportTab(QtWidgets.QWidget):
         self.export_exposure_btn.setToolTip("Save the exposure summary as CSV.")
         self.export_plot_btn = QtWidgets.QPushButton("Export Plot Image")
         self.export_plot_btn.setToolTip("Save the current plot as an image.")
+        self.export_plot_btn.setObjectName("primaryButton")
 
         data_group = QtWidgets.QGroupBox("Data exports")
         data_layout = QtWidgets.QVBoxLayout(data_group)

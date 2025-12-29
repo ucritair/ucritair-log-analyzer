@@ -19,6 +19,7 @@ class VentilationTab(QtWidgets.QWidget):
             "Use a time window in the Plot tab if you want to limit the data."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         self.kind_combo = QtWidgets.QComboBox()
@@ -54,6 +55,7 @@ class VentilationTab(QtWidgets.QWidget):
         self.range_label = QtWidgets.QLabel("Time window: full data")
         self.fit_btn = QtWidgets.QPushButton("Compute air change rate")
         self.fit_btn.setToolTip("Fit a decay curve and compute ACH/eACH.")
+        self.fit_btn.setObjectName("primaryButton")
         self.result = QtWidgets.QLabel("No result yet.")
         self.warnings = QtWidgets.QLabel("")
 

@@ -20,6 +20,7 @@ class AqiTab(QtWidgets.QWidget):
             "This tab calculates an air quality index using PM2.5 and PM10 only."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         self.pack_combo = QtWidgets.QComboBox()
@@ -34,6 +35,7 @@ class AqiTab(QtWidgets.QWidget):
         self.shading_checkbox.setToolTip("Adds colored background bands for the AQI categories.")
         self.compute_btn = QtWidgets.QPushButton("Compute air quality index")
         self.compute_btn.setToolTip("Run the AQI calculation with the settings above.")
+        self.compute_btn.setObjectName("primaryButton")
         self.summary = QtWidgets.QLabel("No air quality index computed")
 
         axis = pg.DateAxisItem(orientation="bottom")

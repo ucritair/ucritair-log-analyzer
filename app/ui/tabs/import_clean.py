@@ -18,10 +18,11 @@ class ImportCleanTab(QtWidgets.QWidget):
         layout.setSpacing(10)
 
         intro = QtWidgets.QLabel(
-            "Use this tab to review the loaded file and choose cleaning options. "
+            "Review the loaded file and choose how to clean it. "
             "Changes apply to the current dataset."
         )
         intro.setWordWrap(True)
+        intro.setObjectName("introText")
         layout.addWidget(intro)
 
         summary_group = QtWidgets.QGroupBox("Current file summary")
@@ -31,20 +32,20 @@ class ImportCleanTab(QtWidgets.QWidget):
         summary_layout.addWidget(self.summary_label)
         layout.addWidget(summary_group)
 
-        cleaning_group = QtWidgets.QGroupBox("Data cleaning options")
+        cleaning_group = QtWidgets.QGroupBox("Cleaning options")
         cleaning_layout = QtWidgets.QFormLayout(cleaning_group)
 
-        self.voc_mask_checkbox = QtWidgets.QCheckBox("Treat gas index zeros as 'not running'")
+        self.voc_mask_checkbox = QtWidgets.QCheckBox("Ignore gas index zeros (sensor off)")
         self.voc_mask_checkbox.setToolTip(
             "When unchecked, VOC/NOx zeros are kept in the data and plots."
         )
         self.voc_mask_checkbox.setChecked(True)
-        self.flatline_checkbox = QtWidgets.QCheckBox("Flag flatlines in particle channels")
+        self.flatline_checkbox = QtWidgets.QCheckBox("Flag constant particle readings")
         self.flatline_checkbox.setToolTip(
             "Highlights long, constant segments in particle data without removing them."
         )
         self.flatline_checkbox.setChecked(True)
-        self.flatline_mask_checkbox = QtWidgets.QCheckBox("Automatically hide flagged particle flatlines")
+        self.flatline_mask_checkbox = QtWidgets.QCheckBox("Hide flagged particle flatlines")
         self.flatline_mask_checkbox.setToolTip(
             "When enabled, flagged flatlines are removed from plots and calculations."
         )
@@ -55,7 +56,7 @@ class ImportCleanTab(QtWidgets.QWidget):
         cleaning_layout.addRow(self.flatline_mask_checkbox)
         layout.addWidget(cleaning_group)
 
-        sampling_group = QtWidgets.QGroupBox("Sampling / resample")
+        sampling_group = QtWidgets.QGroupBox("Resampling")
         sampling_layout = QtWidgets.QFormLayout(sampling_group)
         self.resample_input = QtWidgets.QLineEdit()
         self.resample_input.setPlaceholderText("e.g., 3min")
@@ -67,6 +68,7 @@ class ImportCleanTab(QtWidgets.QWidget):
         self.use_resampled_checkbox.setChecked(False)
 
         self.apply_btn = QtWidgets.QPushButton("Apply to current dataset")
+        self.apply_btn.setObjectName("primaryButton")
         self.apply_btn.setToolTip("Apply these settings to the current dataset.")
 
         sampling_layout.addRow("Resample spacing", self.resample_input)
