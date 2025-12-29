@@ -1,6 +1,6 @@
 QWidget {
   font-family: "Avenir Next", "Avenir", "Nunito Sans", "Noto Sans", "Helvetica Neue", "Sans Serif";
-  font-size: 13px;
+  font-size: 12px;
   color: #14181F;
   background-color: #F5F7FA;
 }
@@ -28,9 +28,9 @@ QLabel#introText {
 QGroupBox {
   background: #FFFFFF;
   border: 1px solid #E2E7EE;
-  border-radius: 12px;
-  margin-top: 18px;
-  padding: 12px;
+  border-radius: 10px;
+  margin-top: 14px;
+  padding: 10px;
 }
 
 QGroupBox::title {
@@ -50,8 +50,9 @@ QPlainTextEdit,
 QTextEdit {
   background: #FFFFFF;
   border: 1px solid #D6DDE7;
-  border-radius: 8px;
-  padding: 6px 8px;
+  border-radius: 7px;
+  padding: 4px 6px;
+  min-height: 22px;
 }
 
 QLineEdit:focus,
@@ -67,8 +68,9 @@ QTextEdit:focus {
 QPushButton {
   background: #FFFFFF;
   border: 1px solid #D6DDE7;
-  border-radius: 8px;
-  padding: 6px 12px;
+  border-radius: 7px;
+  padding: 4px 10px;
+  min-height: 22px;
 }
 
 QPushButton:hover {
@@ -103,9 +105,10 @@ QTabBar::tab {
   background: #EDF1F6;
   border: 1px solid #E1E6ED;
   border-bottom: none;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 6px 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 4px 10px;
+  min-height: 22px;
   margin-right: 6px;
   color: #4D5663;
 }
@@ -126,15 +129,15 @@ QTableWidget {
 QHeaderView::section {
   background: #F2F5F9;
   border: none;
-  padding: 6px;
+  padding: 4px 6px;
   font-weight: 600;
   color: #5C6573;
 }
 
 QCheckBox::indicator,
 QRadioButton::indicator {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 QSplitter::handle {
